@@ -5,7 +5,7 @@ dependencies, or libraries of any kind. The code style is compatible with all we
 style guides and linter configurations.
 
 JavaScript lacks a lot of features you'd want for creating immutable types and also has
-a lot of problematic behavior when creating custom types (lack of reliable instanceof check
+some problematic behavior when creating custom types (lack of reliable instanceof check
 across module versions).
 
 The immutable enumerable style leverages a few modern JavaScript features along with
