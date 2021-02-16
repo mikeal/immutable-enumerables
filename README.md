@@ -126,3 +126,7 @@ classes and class methods without the `function` keyword. The only things we **M
 JavaScript are generators. For this reason, we stick to a convention where the keyword is reserved only for this purpose
 so that other more specific syntax is used elsewhere and can provide more clarity. Since generators are always accompanied
 by the addition of `*` these remain clear to people who are not even accustomed to this style convention.
+
+# Acknowledgements
+
+A lot of the credit for this style goes to @gozala and ideas he surfaced during a large refactoring of [`multiformats`](github.com/multiformats/js-multiformats).
