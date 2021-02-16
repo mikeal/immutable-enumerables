@@ -65,12 +65,14 @@ const makeThree = three => new MyType({...xx, three})
 
 Pretty cool! A few things to note:
 
-1. Using splats and de-structuring the language gives us everything we need for fast copies.
+1. Using speads (`...` syntax) and de-structuring the language gives us everything we need for fast copies.
 2. If you use good property names this pattern provides a nice form of documentation throughout
    your code since all de-structured names must remain consistent and constructors effectively "declare"
    the properties they require.
 3. Unlike positional arguments, property names must be consistent, so these conventions persist well
    beyond the implementation and are consistent across all consumers of this type.
+4. Since we pluck specific properties in the constructor we can use spread on other types that may have
+   many more enumerable properties and our type will only copy the properties that have meaning to this type.
 
 This gives us a nice blend of safety and performance in JavaScript. The properties we deem important are set as
 immutable and we can copy and de-structure properties out of the type easily using the language since these
@@ -80,9 +82,10 @@ give us but JavaScript doesn't have those (yet).
 ## Type Checking
 
 Something as simple as checking if a variable is a particular type is quite an issue in JavaScript. Due to the
-realities of the JS ecoystem and how Node.js/npm resolve dependencies, we can often end up with two slightly
+realities of the JS ecoystem and how Node.js/npm resolve dependencies, we often end up with two slightly
 different version of the same module in the same program. This means that we can't reliably use `instanceof`
-checks.
+checks because types are being passed between modules that can resolve differing versions of the same package so
+and an instance passed to you is not guaranteed to be instantiated from the class you're able to import.
 
 Many people use custom symbols in order to work around this but the problem with symbols is that they don't
 cross Worker boundaries in the browser. We want a fast mechanism for type checking and we want these types
@@ -96,8 +99,30 @@ Circular references **do** make it across worker boundaries, and property names 
 as you can provide to a symbol so this method of type checking works quite well and is incredibly performant
 since it's only a simple pointer check.
 
-Immutable Enumbables give you:
+## Additional Considerations
 
-* Patterns for creating new types that have immutablity of **specific properties**.
-* Flexible type checking that work within the limits of JavaScript and through worker boundaries.
-* 
+There's a few other patterns you may want to follow that you'll find throughout my code. None of these are as
+important as the ones we've already covered.
+
+### Static methods for instantiation
+
+Rather than having consumers use the `new` operator, type classes have at least one but in many occations several
+static methods for instantiating the class. There's several reasons for this:
+
+1. Reducing the use of the `new` operator tends to reduce overall errors as method calls allow for cleaner composition.
+2. Moving complex logic out of the constructor makes the type more flexible because you can add additional methods
+   for arriving at the required state for instantiating the class instead of altering behavior based on additional
+   argument types.
+3. The constructor gets to stay focused on validating and locking the required state for the type.
+4. Constructors cannot be `async` and it is fairly common to need to perform async operations in order to aquire all
+   necessary state. Always using static methods for instantiation normalizes this.
+   
+### Reserving `function` keyword for generators
+
+In JavaScript the `function` keyword can be used for **many** things. So many that the keyword itself loses much meaning.
+
+However, as of ES2015 we have `class` and arrow functions (`=>`), so we have ways to create regular functions and to create
+classes and class methods without the `function` keyword. The only things we **MUST** use the `function` keyword for in
+JavaScript are generators. For this reason, we stick to a convention where the keyword is reserved only for this purpose
+so that other more specific syntax is used elsewhere and can provide more clarity. Since generators are always accompanied
+by the addition of `*` these remain clear to people who are not even accustomed to this style convention.
