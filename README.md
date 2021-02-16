@@ -85,7 +85,7 @@ Something as simple as checking if a variable is a particular type is quite an i
 realities of the JS ecoystem and how Node.js/npm resolve dependencies, we often end up with two slightly
 different version of the same module in the same program. This means that we can't reliably use `instanceof`
 checks because types are being passed between modules that can resolve differing versions of the same package so
-and an instance passed to you is not guaranteed to be instantiated from the class you're able to import.
+an instance passed to you is not guaranteed to be instantiated from the class you're able to import.
 
 Many people use custom symbols in order to work around this but the problem with symbols is that they don't
 cross Worker boundaries in the browser. We want a fast mechanism for type checking and we want these types
