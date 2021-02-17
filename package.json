@@ -1,0 +1,33 @@
+{
+  "name": "immutable-enumerables",
+  "version": "0.0.0",
+  "description": "This document describes a JavaScript coding style. It does not require any tooling, dependencies, or libraries of any kind. The code style is compatible with all well known style guides and linter configurations.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "npm_config_yes=true npx ipjs@latest build --tests",
+    "publish": "npm_config_yes=true npx ipjs@latest publish",
+    "lint": "standard",
+    "test:cjs": "npm run build && mocha dist/cjs/node-test/test-*.js",
+    "test:node": "mocha test/test-*.js",
+    "test:cjs:browser": "polendina --cleanup dist/cjs/browser-test/test-*.js",
+    "test": "npm run lint && npm run test:node && npm run test:cjs && npm run test:cjs:browser",
+    "coverage": "c8 --reporter=html mocha test/test-*.js && npm_config_yes=true npx st -d coverage -p 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikeal/immutable-enumerables.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikeal/immutable-enumerables/issues"
+  },
+  "homepage": "https://github.com/mikeal/immutable-enumerables#readme",
+  "devDependencies": {
+    "mocha": "^8.3.0",
+    "polendina": "^1.1.0",
+    "standard": "^16.0.3"
+  }
+}
