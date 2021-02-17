@@ -1,6 +1,6 @@
 {
   "name": "immutable-enumerables",
-  "version": "0.0.0",
+  "version": "0.0.0-dev",
   "description": "This document describes a JavaScript coding style. It does not require any tooling, dependencies, or libraries of any kind. The code style is compatible with all well known style guides and linter configurations.",
   "main": "index.js",
   "type": "module",
