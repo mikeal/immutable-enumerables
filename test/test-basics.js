@@ -1,6 +1,7 @@
 /* globals describe, it */
 import { lock } from '../index.js'
 import { deepStrictEqual as same } from 'assert'
+import { ipc } from './ipc.js'
 
 describe('basics', () => {
   it('MyClass', () => {
@@ -21,5 +22,20 @@ describe('basics', () => {
       console.error(e.message)
     }
     same(threw, true)
+  })
+
+  const move = ipc()
+  after(move.close)
+
+  it('worker', async () => {
+    class MyClass {
+      constructor ({ test }) {
+        const asMyClass = this
+        lock(this, { test, asMyClass })
+      }
+    }
+    const node = await move(new MyClass({ test: true }))
+    same(node.test, true)
+    same(node.asMyClass, node)
   })
 })
