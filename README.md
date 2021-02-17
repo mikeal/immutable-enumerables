@@ -24,10 +24,8 @@ const lock = (obj, props) => defineProperties(obj, fromEntries(entries(props).ma
 class MyType {
   constructor ({ one, two, three }) {
     const four = 4
-    lock(this, { one, two, three, four })  
-  }
-  get asMyType () {
-    return this
+    const asMyType = this
+    lock(this, { one, two, three, four, asMyType })  
   }
 }
 
@@ -52,7 +50,7 @@ Ok, let's talk about what we do for all types written in this style.
 3. We create any additional immutable state we want to assign to the type.
 4. We "lock" these properties (and only these properties) to the class instance.
 5. Our locked properties are the only enumerable properties on this class instance.
-6. We have a single getter for `asMyType` that returns this instance.
+6. We have a property for `asMyType` that returns this instance (circular reference).
 
 Let's see what we can do with this.
 
